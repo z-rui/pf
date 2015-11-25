@@ -28,5 +28,3 @@ class EuclidField(object):
     def __array__(self):
         h, w = self.shape
         return numpy.array([[self[i, j] for j in range(w)] for i in range(h)])
-
-f = EuclidField((3, 3), (0, 0), [(1,1)])
