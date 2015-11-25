@@ -28,6 +28,16 @@ def field_to_image(f):
                 px[j, i] = (0, 0, int(val / minp * 255))
     return img
 
+def find_nextstep(f, src):
+    h, w = f.shape
+    i, j = src
+    return min(
+        ((i1, j1)
+        for i1 in (i-1, i, i+1) if i1 in range(h)
+        for j1 in (j-1, j, j+1) if j1 in range(w)
+        ), key=lambda x: f[x]
+    )
+
 def find_path(f, src, dst=None, maxattempt=None):
     path = [src]
     h, w = f.shape
@@ -35,13 +45,7 @@ def find_path(f, src, dst=None, maxattempt=None):
         maxattempt = w*h
     while maxattempt > 0 and src != dst:
         maxattempt -= 1
-        i, j = src
-        src = min(
-            ((i1, j1)
-            for i1 in (i-1, i, i+1) if i1 in range(h)
-            for j1 in (j-1, j, j+1) if j1 in range(w)
-            ), key=lambda x: f[x]
-        )
+        src = find_nextstep(f, src)
         path.append(src)
     return path
 
