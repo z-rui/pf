@@ -3,7 +3,6 @@ import numpy
 
 class EuclidField(object):
     p = 5.0
-    r = 30.0
     @staticmethod
     def dist(x, y):
         return numpy.hypot(x[0]-y[0], x[1]-y[1])
@@ -23,8 +22,8 @@ class EuclidField(object):
         for obj in self.obstacles:
             dist_to_obj = self.dist(q, obj)
             if dist_to_obj <= p:
-                k += (1/dist_to_obj - 1/p)**2
-        return (1.0 + k) * base**2 + self.r*k
+                k += 5.0 / (1+(dist_to_obj/2.0)**6)
+        return (1.0 + k) * base**2
     def __array__(self):
         h, w = self.shape
         return numpy.array([[self[i, j] for j in range(w)] for i in range(h)])
